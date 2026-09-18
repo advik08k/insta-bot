@@ -90,7 +90,9 @@ app.post('/api/accounts/:id/settings', (req, res) => {
     
     if (req.body.uploadInterval !== undefined) {
         acc.uploadInterval = req.body.uploadInterval;
-        addLog(`[+] Account ${acc.username} upload interval set to: ${acc.uploadInterval}`);
+        const newMins = parseInt(req.body.uploadInterval) || 60;
+        acc.nextUploadTime = Date.now() + (newMins * 60 * 1000);
+        addLog(`[+] Account ${acc.username} upload interval set to: ${acc.uploadInterval} mins. Timer reset.`);
     }
     
     saveDB(db, addLog);
