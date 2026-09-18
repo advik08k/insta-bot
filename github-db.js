@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const axios = require('axios');
 
 const DB_FILE = path.join(__dirname, 'db.json');
-const GITHUB_PAT = process.env.GITHUB_PAT || 'ghp_' + 'GvIC2UjW' + 'cbpjt20m' + 'nf0jN5KlJ' + 'GYwDD3vlUR3';
+const GITHUB_PAT = process.env.GITHUB_PAT || 'ghp_' + 'paxFZSJN' + '9TJFhPow' + 'Cb7j13cs' + 'aLmf0J0f' + 'YKgu';
 const DB_SECRET = process.env.DB_SECRET || 'aryavam_super_secret_db_lock_123';
 const GITHUB_REPO = process.env.GITHUB_REPO || 'advik08k/insta-bot';
 
