@@ -234,30 +234,8 @@ const executeAutoUpload = async () => {
 
         try {
             addLog(`[+] Requesting video from Loader.to API (1080p)...`);
-            const initRes = await fetch(`https://loader.to/ajax/download.php?format=1080&url=${encodeURIComponent(youtubeUrl)}`);
-            const initData = await initRes.json();
-            if (!initData.id) throw new Error("Loader.to API failed to initiate task.");
-            
-            const taskId = initData.id;
-            let downloadUrl = null;
-            for (let i = 0; i < 60; i++) {
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                const progressRes = await fetch(`https://loader.to/ajax/progress.php?id=${taskId}`);
-                const progressData = await progressRes.json();
-                if (progressData.success === 1 && progressData.download_url) {
-                    downloadUrl = progressData.download_url;
-                    break;
-                }
-            }
-            if (!downloadUrl) throw new Error("Loader.to API timed out.");
-            
-            addLog(`[+] Streaming video directly to disk...`);
-            const response = await fetch(downloadUrl);
-            if (!response.ok) throw new Error('Download failed from Loader.to');
-            
-            const { Readable } = require('stream');
-            const { pipeline } = require('stream/promises');
-            await pipeline(Readable.fromWeb(response.body), fs.createWriteStream(videoPath));
+            const { browserlessDownload } = require("./browserlessDownloader");
+            await browserlessDownload(youtubeUrl, videoPath, addLog);
 
             addLog(`[+] Optimizing video format for Instagram (H.264)...`);
             await new Promise((resolve) => {
